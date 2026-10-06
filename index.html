@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<title>文浩集團 策略地圖 v3.9.1</title>
+<title>文浩集團 策略地圖 v3.10.1</title>
 <style>
   :root{--ink:#1A1A1A;--brown:#DF9C41;--deep:#1A1A1A;--taupe:#A3A3A3;--beige:#F5F5F5;--hair:#E5E5E5;--grey:#737373;--gold:#DF9C41;--green:#5D8722;--white:#fff;
     --tw:#F3E4A8;--cn:#FFB74D;--os:#AF7231;--q1:#C5D3DC;--q2:#9DB6C7;--q3:#5B9CC0;--q4:#1F5C8A;--omp:#F5B94A;--ach:#2E8B57}
@@ -190,6 +190,16 @@
   .sm td.ed:focus{outline:2px solid var(--gold);background:#fff}
   .sm td.tx{white-space:normal;text-align:left;min-width:220px;max-width:360px;font-size:13px;line-height:1.5;vertical-align:top}
   .sm td.note{color:var(--grey);font-size:12px;text-align:left;white-space:normal}
+
+  .env4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .quad{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .quad.q4{grid-template-columns:repeat(4,1fr)}
+  .eh{font-weight:600;font-size:14px;margin-bottom:4px}
+  .env4 textarea,.quad textarea,.tows textarea{width:100%;border:1px solid var(--hair);border-radius:8px;padding:8px 10px;font:inherit;font-size:13.5px;min-height:84px;resize:vertical}
+  .env4 textarea:focus,.quad textarea:focus,.tows textarea:focus{outline:2px solid var(--gold);border-color:transparent}
+  .tows{display:grid;grid-template-columns:90px 1fr 1fr;gap:12px;margin-top:16px;align-items:stretch}
+  .tows-h{font-weight:600;font-size:14px;background:var(--beige);border-radius:8px;display:flex;align-items:center;justify-content:center;padding:8px;color:var(--ink)}
+  @media (max-width:900px){.env4,.quad.q4{grid-template-columns:1fr 1fr}.tows{grid-template-columns:70px 1fr 1fr}}
   @media print{.ctl{position:static}.rates,.btn{display:none}table{min-width:0;font-size:11px}section{break-inside:avoid}details{break-inside:avoid}}
 </style>
 </head>
@@ -199,7 +209,7 @@
 <div class="head">
   <div><h1>文浩集團 策略地圖</h1>
   <div class="sub">基準年 2026 ・ Y1＝2027 ・ Y10＝2036 ・ 毛利為主目標，營收為參考 ・ 年度計畫十架構</div></div>
-  <div class="ver"><img src="https://win-house-group.github.io/win-house-brand-assets/Win-House-Group-bk.png" alt="Win-House Group" style="height:34px;display:block;margin-bottom:6px;margin-left:auto"> DS v3.18.0 ・ v3.9.1 ・ 2026-09</div>
+  <div class="ver"><img src="https://win-house-group.github.io/win-house-brand-assets/Win-House-Group-bk.png" alt="Win-House Group" style="height:34px;display:block;margin-bottom:6px;margin-left:auto"> DS v3.18.0 ・ v3.10.1 ・ 2026-09</div>
 </div>
 
 <nav class="tabs" id="tabs">
@@ -606,7 +616,7 @@ function renderC2(){
   const yrs=COLS(), tw=target('NTD'), cn=target('RMB'), gp=target('NTD'), reg=S.region;
   let h='<tr><th>區域 ／ 部門・據點</th><th></th>'+yrs.map(c=>c.head).join('')+'</tr>';
   if(reg==='all'||reg==='tw'){ h+=row('台灣',tw,yrs.map(y=>money(D.tw,y,'NTD')),'lead');
-    ['　A 部門','　B 部門','　C 部門'].forEach(d=>h+=`<tr class="sub"><td>${d}</td><td class="unit">${tw}</td>${yrs.map(()=>edit('待填')).join('')}</tr>`); }
+    ['　一部','　二部','　三部'].forEach(d=>h+=`<tr class="sub"><td>${d}</td><td class="unit">${tw}</td>${yrs.map(()=>edit('待填')).join('')}</tr>`); }
   if(reg==='all'||reg==='cn'){ h+=row('大陸',cn,yrs.map(y=>money(D.cn,y,'RMB')),'lead');
     for(const [k,q] of Object.entries(D.cnSite)) h+=row('　'+k,cn,yrs.map(y=>money(q,y,'RMB')),'sub'); }
   if(reg==='all'||reg==='os'){ h+=row('海外',target('USD'),yrs.map(y=>money(D.os,y,'USD')),'lead'); h+=row('　越南／馬來西亞／其他',target('USD'),yrs.map(y=>money(D.os,y,'USD')),'sub'); }
@@ -678,14 +688,23 @@ document.getElementById('btnAll').addEventListener('click',()=>{ const ds=[...do
 
 /* ===== 6. 年度目標設定（點年份進入） ===== */
 var PJ={};                        // 專案計畫（於第 7 節填入預設）
+const ENV={
+  pestel:[['P','政治環境 P','政策法令、政治因素'],['E','經濟因素 E','產業的變化、科技的替代、經濟的變化／影響'],['S','社會市場流行趨勢 S','市場規模的變化、市場板塊的移動'],['T','競爭威脅與科技變革 T','競爭者比較分析'],['En','環境變遷因素 E','氣候因素、環保議題'],['L','法律認證要件 L','法規的規範、認證的需求']],
+  internal:[['hr','人力資源分析','1. 人效　2. 靜態分析　3. 動態分析'],['ops','產銷排行榜分析（物力）','1. 生產分析　2. 銷售分析'],['fin','經營財務分析（財力）','毛利率、費用率、淨利率、現金、AR、存貨'],['info','內部資訊','系統、資料、報表的完整度']],
+  bcg:[['star','明星產品','利潤高 40% 以上；業績占比漸增 15% 以上；成長率 40% 以上'],['question','問題產品／新產品？','利潤高 40% 以上；業績占比 5%；成長率？'],['cow','金牛產品','利潤好 30% 以上；SR 占比高 70%；成長率 20% 以上'],['dog','老狗產品','利潤低 10% 以下；SR 占比低 10%；呆滯存貨']],
+  ansoff:[['nm_op','新市場／舊產品','成長率 30% 以上；占比 16% 以上'],['nm_np','新市場／新產品','成長率 20% 以上；占比 4% 以上'],['om_op','舊市場／舊產品','成長率 20% 以上；占比 64% 以上'],['om_np','舊市場／新產品','成長率 30% 以上；占比 16% 以上']],
+  swot:[['S','優勢 S'],['W','劣勢 W'],['O','機會 O'],['T','威脅 T']],
+  tows:[['SO','攻擊拓展戰略（S×O）'],['ST','迂迴取勝戰略（S×T）'],['WO','游擊利基戰略（W×O）'],['WT','保全固守／退出再起戰略（W×T）']],
+};
+const envDefault=()=>({pestel:{},internal:{},bcg:{},ansoff:{},swot:{}});
 const P={};                       // 每年一份計畫（文字與狀態）；數字直接寫回 D
-const BR=Object.keys(D.brandTW), SITES=Object.keys(D.cnSite), DEPTS=['A 部門','B 部門','C 部門'];
+const BR=Object.keys(D.brandTW), SITES=Object.keys(D.cnSite), DEPTS=['一部','二部','三部'];
 function planOf(y){
-  if(P[y]) return P[y];
+  if(P[y]){ const d=P[y].depts||{}; [['A 部門','一部'],['B 部門','二部'],['C 部門','三部']].forEach(([o,nw])=>{ if(d[o]!==undefined){ if(!d[nw]) d[nw]=d[o]; delete d[o]; } }); P[y].depts=d; const e=P[y].env; if(!e||typeof e.pestel!=='object'){ const old=e||{}; P[y].env=envDefault(); if(typeof old.swot==='string') P[y].env.swot.S=old.swot; if(typeof old.pestel==='string') P[y].env.pestel.P=old.pestel; } return P[y]; }
   const base=y===2027;
-  P[y]={status:'草案',updated:'',depts:{'A 部門':'','B 部門':'','C 部門':''},rebuy:90,grow:48,capex:'',equity:'',debt:'',capital:'',
+  P[y]={status:'草案',updated:'',depts:{'一部':'','二部':'','三部':''},rebuy:90,grow:48,capex:'',equity:'',debt:'',capital:'',
     strat:STRAT.map(x=>base?x.b.join('；'):''), ops:OPS.map(o=>({goal:base?o[1]:'',owner:'',due:''})),
-    feas:['','','',''], env:{swot:'',pestel:''}, note:''};
+    feas:['','','',''], env:envDefault(), note:''};
   return P[y];
 }
 let PY=2027;
@@ -764,9 +783,28 @@ function renderPlan(){
     ${fr('資本結構變動（2）融資','','<input type="text" data-t="debt" value="'+p.debt+'">')}
     ${fr('資本額','NTD 萬','<input type="text" data-t="capital" value="'+p.capital+'">')}
   </div>
-<div class="blk"><h3>可行性評估 ＋ 環境分析</h3><span class="k">技術／市場／財務／營運；內部 SWOT、外部 PESTEL</span>
-    ${['技術可行性（技術資源、開發成本）','市場可行性（市場規模、競爭對手）','財務可行性（所需資金、收益預測）','營運可行性（人力需求、符合法規）'].map((t,i)=>`<div class="ft" style="grid-template-columns:1fr"><textarea data-f="${i}" placeholder="${t}">${p.feas[i]}</textarea></div>`).join('')}
-    <div class="ft" style="grid-template-columns:1fr 1fr"><textarea data-e="swot" placeholder="內部 SWOT：人力、物力、財力、資訊">${p.env.swot}</textarea><textarea data-e="pestel" placeholder="外部 PESTEL">${p.env.pestel}</textarea></div>
+<div class="blk" style="grid-column:1/-1"><h3>可行性評估</h3><span class="k">技術／市場／財務／營運</span>
+    <div class="env4">${['技術可行性（技術資源、開發成本）','市場可行性（市場規模、競爭對手）','財務可行性（所需資金、收益預測）','營運可行性（人力需求、符合法規）'].map((t,i)=>`<div><div class="eh">${t}</div><textarea data-f="${i}">${p.feas[i]}</textarea></div>`).join('')}</div>
+  </div>
+  <div class="blk" style="grid-column:1/-1"><h3>環境分析 — 外部（PESTEL）</h3><span class="k">年度計畫前置準備一</span>
+    ${ENV.pestel.map(r=>`<div class="ft" style="grid-template-columns:200px 1fr"><div><b>${r[1]}</b><div class="h">${r[2]}</div></div><textarea data-e="pestel.${r[0]}">${p.env.pestel[r[0]]||''}</textarea></div>`).join('')}
+  </div>
+  <div class="blk" style="grid-column:1/-1"><h3>環境分析 — 內部（人力／物力／財力／資訊）</h3><span class="k">內部資源檢討</span>
+    <div class="env4">${ENV.internal.map(r=>`<div><div class="eh">${r[1]}</div><div class="h" style="margin-bottom:6px">${r[2]}</div><textarea data-e="internal.${r[0]}">${p.env.internal[r[0]]||''}</textarea></div>`).join('')}</div>
+  </div>
+  <div class="blk"><h3>內部資源檢討 — BCG 矩陣</h3><span class="k">填入各象限的品牌／產品線</span>
+    <div class="quad">${ENV.bcg.map(r=>`<div><div class="eh">${r[1]}</div><div class="h" style="margin-bottom:6px">${r[2]}</div><textarea data-e="bcg.${r[0]}">${p.env.bcg[r[0]]||''}</textarea></div>`).join('')}</div>
+  </div>
+  <div class="blk"><h3>內部資源檢討 — ANSOFF 矩陣</h3><span class="k">銷售結構診斷：填入成長率與占比</span>
+    <div class="quad">${ENV.ansoff.map(r=>`<div><div class="eh">${r[1]}</div><div class="h" style="margin-bottom:6px">${r[2]}</div><textarea data-e="ansoff.${r[0]}">${p.env.ansoff[r[0]]||''}</textarea></div>`).join('')}</div>
+  </div>
+  <div class="blk" style="grid-column:1/-1"><h3>SWOT 分析與 TOWS 戰略規劃</h3><span class="k">先填 S／W／O／T，再依四組合填戰略</span>
+    <div class="quad q4">${ENV.swot.map(r=>`<div><div class="eh">${r[1]}</div><textarea data-e="swot.${r[0]}">${p.env.swot[r[0]]||''}</textarea></div>`).join('')}</div>
+    <div class="tows">
+      <div class="tows-h"></div><div class="tows-h">機會 O</div><div class="tows-h">威脅 T</div>
+      <div class="tows-h">優勢 S</div>${ENV.tows.slice(0,2).map(r=>`<div><div class="eh">${r[1]}</div><textarea data-e="swot.${r[0]}">${p.env.swot[r[0]]||''}</textarea></div>`).join('')}
+      <div class="tows-h">劣勢 W</div>${ENV.tows.slice(2).map(r=>`<div><div class="eh">${r[1]}</div><textarea data-e="swot.${r[0]}">${p.env.swot[r[0]]||''}</textarea></div>`).join('')}
+    </div>
   </div>
 <div class="blk" style="grid-column:1/-1"><h3>會議紀錄／備註</h3><span class="k">主管討論結論、待決事項</span>
     <div class="ft" style="grid-template-columns:1fr"><textarea data-n="1" style="min-height:90px">${p.note}</textarea></div>
@@ -812,7 +850,7 @@ function commit(e){
   if(t.dataset.s!==undefined) p.strat[+t.dataset.s]=t.value;
   if(t.dataset.o!==undefined) p.ops[+t.dataset.o][t.dataset.q]=t.value;
   if(t.dataset.f!==undefined) p.feas[+t.dataset.f]=t.value;
-  if(t.dataset.e) p.env[t.dataset.e]=t.value;
+  if(t.dataset.e){ const [g,k]=t.dataset.e.split('.'); if(!p.env[g]) p.env[g]={}; p.env[g][k]=t.value; }
   if(t.dataset.n) p.note=t.value;
   if(t.id==='pStatus') p.status=t.value;
   p.updated=new Date().toLocaleString('zh-TW',{hour12:false}); refreshCalc(); save();
@@ -924,7 +962,7 @@ function renderSM(){
   if(SMO.rg){ rows.push({leaf:1,html:`<td class="sub">台灣（文浩）　NTD</td>${V(yrs.map(y=>money_(fyVal(D.tw,y),'NTD')))}`}); rows.push({leaf:1,html:`<td class="sub">大陸（宇宙光）　RMB</td>${V(yrs.map(y=>money_(fyVal(D.cn,y),'RMB')))}`});
     rows.push({leaf:1,html:`<td class="sub">海外（越南／馬來西亞／歐洲）　USD</td>${V(yrs.map(y=>money_(fyVal(D.os,y),'USD')))}`}); }
   rows.push({html:`<td class="sub">${tg('ch')}（3）通路／事業別</td>${V(yrs.map(y=>SMO.ch?'':'台灣 3 部門・大陸 6 據點・海外'),'v ref')}`});
-  if(SMO.ch){ if(reg==='all'||reg==='tw'){ ['A 部門','B 部門','C 部門'].forEach(d=>rows.push({leaf:1,html:`<td class="sub">台灣 ${d}　NTD</td>${yrs.map(y=>`<td class="v ed" contenteditable="true" data-smd="${d}" data-y="${cy(y)}">${(P[cy(y)]&&P[cy(y)].depts&&P[cy(y)].depts[d])||'待填'}</td>`).join('')}`})); }
+  if(SMO.ch){ if(reg==='all'||reg==='tw'){ ['一部','二部','三部'].forEach(d=>rows.push({leaf:1,html:`<td class="sub">台灣 ${d}　NTD</td>${yrs.map(y=>`<td class="v ed" contenteditable="true" data-smd="${d}" data-y="${cy(y)}">${(P[cy(y)]&&P[cy(y)].depts&&P[cy(y)].depts[d])||'待填'}</td>`).join('')}`})); }
     if(reg==='all'||reg==='cn'){ for(const [k,q] of Object.entries(D.cnSite)) rows.push({leaf:1,html:`<td class="sub">大陸 ${k}　RMB</td>${V(yrs.map(y=>money_(fyVal(q,y),'RMB')))}`}); }
     if(reg==='all'||reg==='os') rows.push({leaf:1,html:`<td class="sub">海外據點數</td>${V(yrs.map(y=>num(interp(D.sites,cy(y),false),0)+' 處'))}`});
     rows.push({leaf:1,html:`<td class="sub">客戶新舊（回購率底線 85%）</td>${V(yrs.map(y=>'既有 90%＋成長＋新客'),'v ref')}`}); }
