@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<title>文浩集團 策略地圖 v4.1.0</title>
+<title>文浩集團 策略地圖 v4.2.0</title>
 <style>
   :root{--ink:#1A1A1A;--brown:#DF9C41;--deep:#1A1A1A;--taupe:#A3A3A3;--beige:#F5F5F5;--hair:#E5E5E5;--grey:#737373;--gold:#DF9C41;--green:#5D8722;--white:#fff;
     --tw:#F3E4A8;--cn:#FFB74D;--os:#AF7231;--q1:#C5D3DC;--q2:#9DB6C7;--q3:#5B9CC0;--q4:#1F5C8A;--omp:#F5B94A;--ach:#2E8B57}
@@ -262,7 +262,7 @@
 <div class="head">
   <div><h1>文浩集團 策略地圖</h1>
   <div class="sub">基準年 2026 ・ Y1＝2027 ・ Y10＝2036 ・ 毛利為主目標，營收為參考 ・ 年度計畫十架構</div></div>
-  <div class="ver"><img src="https://win-house-group.github.io/win-house-brand-assets/Win-House-Group-bk.png" alt="Win-House Group" style="height:34px;display:block;margin-bottom:6px;margin-left:auto"> DS v3.18.0 ・ v4.1.0 ・ 2026-09</div>
+  <div class="ver"><img src="https://win-house-group.github.io/win-house-brand-assets/Win-House-Group-bk.png" alt="Win-House Group" style="height:34px;display:block;margin-bottom:6px;margin-left:auto"> DS v3.18.0 ・ v4.2.0 ・ 2026-09</div>
 </div>
 
 <nav class="tabs" id="tabs">
@@ -435,6 +435,7 @@ const D={
   sales:{ tw:{2026:12,2027:14,2028:16,2029:18,2031:22,2036:40,2046:'—',2056:'—'}, cn:{2026:14,2027:16,2028:18,2029:20,2031:24,2036:40,2046:'—',2056:'—'}, os:{2026:1,2027:2,2028:4,2029:6,2031:10,2036:40,2046:'—',2056:'—'} },
   brands:{2026:27,2027:29,2028:31,2029:33,2031:36,2036:42,2046:80,2056:150}, mna:{2026:0,2027:0,2028:0,2029:0,2031:1,2036:4,2046:15,2056:30},
   sites:{2026:1,2027:1,2028:2,2029:3,2031:4,2036:6,2046:12,2056:25}, service:{2026:0,2027:0,2028:2,2029:3,2031:5,2036:10,2046:15,2056:20},
+  act:{ tw:{gp:{},rev:{}}, cn:{"gp": {"2024": [61.1, 31.3, 53.1, 65.7, 68.2, 50.1, 60.0, 64.8, 70.3, 56.0, 75.8, 70.1], "2025": [62.5, 62.5, 62.5, 95.9, 95.9, 95.9, 74.4, 74.4, 74.4, 73.1, 73.1, 73.1], "2026": [89.1, 31.9, 93.0, 97.8, 98.5, 124.4, 121.3, 112.0, "", "", "", ""]}, "rev": {"2023": [209.1, 275.6, 330.7, 299.8, 318.3, 273.2, 342.6, 384.6, 356.2, 360.7, 337.6, 338.3], "2024": [437.3, 245.0, 381.6, 438.8, 496.1, 367.3, 449.5, 433.6, 463.4, 338.1, 419.5, 424.9], "2025": [437.2, 437.2, 437.2, 572.4, 572.4, 572.4, 547.9, 547.9, 547.9, 499.2, 499.2, 499.2], "2026": [603.5, 203.3, 621.8, 705.6, 684.3, 849.5, 871.2, 750.2, "", "", "", ""]}} },   // 月實績（萬，當地幣）：大陸取自宇宙光毛利統計；台灣待 SAP 月資料
   capital:{2029:'控股化（增資）',2031:'策略投資人＋聯貸額度',2036:'集團融資平台',2046:'換股併購'},
 };
 /* 圖表用：Sales Result（M USD，曆年）＋ 毛利（當地幣） */
@@ -653,7 +654,7 @@ function renderC2(){
   const yrs=COLS(), tw=target('NTD'), cn=target('RMB'), gp=target('NTD'), reg=S.region;
   let h='<tr><th>區域 ／ 部門・據點</th><th></th>'+yrs.map(c=>c.head).join('')+'</tr>';
   if(reg==='all'||reg==='tw'){ h+=row('台灣',tw,yrs.map(y=>money(D.tw,y,'NTD')),'lead');
-    DEPTS.map(d=>'　'+d).forEach(d=>h+=`<tr class="sub"><td>${d}</td><td class="unit">${tw}</td>${yrs.map(c=>{ const dv=N(((P[cy(c)]||{}).depts||{})[d.trim()],NaN); return `<td>${isFinite(dv)&&dv>0?fmtMoney(toCcy(dv*W*cf(c),'NTD',tw),tw):'待填'}</td>`; }).join('')}</tr>`); }
+    DEPTS.map(d=>'　'+d).forEach(d=>h+=`<tr class="sub"><td>${d}</td><td class="unit">${tw}</td>${yrs.map(c=>{ const dv=N(deptVal(cy(c),d.trim()),NaN); return `<td>${isFinite(dv)&&dv>0?fmtMoney(toCcy(dv*W*cf(c),'NTD',tw),tw):'待填'}</td>`; }).join('')}</tr>`); }
   if(reg==='all'||reg==='cn'){ h+=row('大陸',cn,yrs.map(y=>money(D.cn,y,'RMB')),'lead');
     for(const [k,q] of Object.entries(D.cnSite)) h+=row('　'+k,cn,yrs.map(y=>money(q,y,'RMB')),'sub'); }
   if(reg==='all'||reg==='os'){ h+=row('海外',target('USD'),yrs.map(y=>money(D.os,y,'USD')),'lead'); h+=row('　越南／馬來西亞／其他',target('USD'),yrs.map(y=>money(D.os,y,'USD')),'sub'); }
@@ -758,6 +759,10 @@ const HRK=[['sal','薪資',5,6],['b1','獎金・年終',1,1],['b2','獎金・業
 const hrK=y=>interp(D.margin,y,false)/20;   // 毛利率不是 20% 時依比例換算（＝人事費用約占毛利 50–55%）
 function hrMixOf(y){ if(D.hrMix[y]) return D.hrMix[y]; const k=hrK(y), o={}; HRK.forEach(r=>o[r[0]]=(r[2]+r[3])/2*k); return o; }
 const rng=(a,b,k)=>a===b?`${(a*k).toFixed(1)}%`:`${(a*k).toFixed(1)}–${(b*k).toFixed(1)}%`;
+const ACTNOTE={cn:'資料來源：宇宙光毛利統計（2023–2026，依業務別小計加總）。2025 只有季資料，月份以季均分；2023 只有業績；2026 截至 8 月。',
+  tw:'台灣目前沒有月份資料（請由 SAP 依月拉出毛利與業績）。已知實績：營收 2023 1.885 億、2024 1.809 億（申報書）、2025 2.359 億／毛利 6,231 萬；2026 1–9 月營收 2.844 億／毛利 6,512 萬（1–8 月 5,841 萬，9 月約 671 萬）。'};
+const DEPT26={'一部':'3525.3','二部':'2901.7','三部':'2999.1','其他':'176'};   // 2026 部門目標（由正式版本反推，NTD 萬）
+const deptVal=(y,d)=>{ const v=((P[y]||{}).depts||{})[d]; if(v!==undefined&&v!=='') return v; return y===2026?DEPT26[d]:(y===2027?DEPT27[d]:''); };
 const envDefault=()=>({pestel:{},five:{},internal:{},bcg:{},ansoff:{},swot:{}});
 const hpaDefault=()=>({tw:{gp:{},rev:{}},cn:{gp:{},rev:{}},cause:'',action:''});
 const P={};                       // 每年一份計畫（文字與狀態）；數字直接寫回 D
@@ -765,24 +770,24 @@ const BR=Object.keys(D.brandTW), SITES=Object.keys(D.cnSite), DEPTS=['一部','�
 const DEPT27={'一部':'3937','二部':'3357','三部':'4910.4','其他':'300'};   // 2027 正式版本（NTD 萬）
 const locked=y=>!!(P[y]&&P[y].status==='定稿');
 function normPlan(p){
-  if(p._v===41) return p;
+  if(p._v===42) return p;
   const d=p.depts||{}; [['A 部門','一部'],['B 部門','二部'],['C 部門','三部']].forEach(([o,nw])=>{ if(d[o]!==undefined){ if(!d[nw]) d[nw]=d[o]; delete d[o]; } }); p.depts=d;
   let e=p.env; if(!e||typeof e.pestel!=='object'){ const old=e||{}; e=envDefault(); if(typeof old.swot==='string') e.swot.S=old.swot; if(typeof old.pestel==='string') e.pestel.P_chg=old.pestel; }
   for(const g of ['pestel','five','internal','bcg','ansoff','swot']) if(!e[g]) e[g]={};
   for(const r of ENV.pestel) if(typeof e.pestel[r[0]]==='string'){ if(!e.pestel[r[0]+'_chg']) e.pestel[r[0]+'_chg']=e.pestel[r[0]]; delete e.pestel[r[0]]; }
   for(const r of ENV.tows) if(typeof e.swot[r[0]]==='string'){ if(!e.swot[r[0]+'1_name']) e.swot[r[0]+'1_name']=e.swot[r[0]]; delete e.swot[r[0]]; }
   p.env=e; p.cycle=p.cycle||{}; p.hpa=p.hpa||hpaDefault();
-  for(const k of ['tw','cn']){ p.hpa[k]=p.hpa[k]||{gp:{},rev:{}}; p.hpa[k].gp=p.hpa[k].gp||{}; p.hpa[k].rev=p.hpa[k].rev||{}; }
+  for(const k of ['tw','cn']){ p.hpa[k]=p.hpa[k]||{gp:{},rev:{}}; for(const mt of ['gp','rev']){ const src=p.hpa[k][mt]||{}; for(const yr of Object.keys(src)){ const a=src[yr]||[], cur=D.act[k][mt][yr]; if(a.some(v=>v!==''&&v!=null)&&(!cur||cur.every(v=>v===''||v==null))) D.act[k][mt][yr]=a.slice(); } p.hpa[k][mt]={}; } }
   p.ops=p.ops||[]; while(p.ops.length<OPS.length) p.ops.push({});
   p.ops.forEach(o=>{ for(const k of ['goal','act','owner','due']) if(o[k]===undefined) o[k]=''; });
   if(p.ops[1]&&['台灣毛利 1.16 億／大陸 1,460 萬 RMB；回購率 ≥90%；新客＋新 Design-in 毛利 ≥2,100 萬','台灣毛利 1.248 億／大陸 1,560 萬 RMB；回購率 ≥90%；新客＋新 Design-in 毛利 ≥2,000 萬'].includes(p.ops[1].goal)) p.ops[1].goal=OPS[1][1];
   p.strat=p.strat||['','','','','']; p.feas=p.feas||['','','',''];
-  if(p.note===undefined) p.note=''; p._v=41; return p;
+  if(p.note===undefined) p.note=''; p._v=42; return p;
 }
 function planOf(y){
   if(P[y]){ const p=normPlan(P[y]); if(y===2027&&DEPTS.every(d=>!p.depts[d])) Object.assign(p.depts,DEPT27); return p; }
   const base=y===2027;
-  P[y]=normPlan({status:'草案',updated:'',depts:base?{...DEPT27}:{'一部':'','二部':'','三部':'','其他':''},rebuy:90,grow:48,capex:'',equity:'',debt:'',capital:'',
+  P[y]=normPlan({status:'草案',updated:'',depts:base?{...DEPT27}:(y===2026?{...DEPT26}:{'一部':'','二部':'','三部':'','其他':''}),rebuy:90,grow:48,capex:'',equity:'',debt:'',capital:'',
     strat:STRAT.map(x=>base?x.b.join('；'):''), ops:OPS.map(o=>({goal:base?o[1]:'',act:'',owner:'',due:''})),
     feas:['','','',''], env:envDefault(), cycle:{}, hpa:hpaDefault(), note:''});
   return P[y];
@@ -831,8 +836,9 @@ function renderPlan(){
   <span class="note" style="margin:0">單位：${hU}；依月由 SAP 拉出</span></div>
   <div id="hpaChart"></div>
   <div class="tbl"><table class="hp"><tr><th>年份</th>${[...Array(12)].map((_,m)=>`<th>${m+1}月</th>`).join('')}<th>合計</th></tr>
-  ${yrsH.map(yr=>{ const arr=p.hpa[HPAR][HPAM][yr]||[]; return `<tr><td><b>${yr}</b></td>${[...Array(12)].map((_,m)=>`<td><input type="number" data-h="${HPAR}.${HPAM}.${yr}.${m}" value="${arr[m]??''}"></td>`).join('')}<td data-hs="${yr}">—</td></tr>`; }).join('')}
+  ${yrsH.map(yr=>{ const arr=D.act[HPAR][HPAM][yr]||[]; return `<tr><td><b>${yr}</b></td>${[...Array(12)].map((_,m)=>`<td><input type="number" data-h="${HPAR}.${HPAM}.${yr}.${m}" value="${arr[m]??''}"></td>`).join('')}<td data-hs="${yr}">—</td></tr>`; }).join('')}
   <tr class="ref"><td>月份比重</td>${[...Array(12)].map((_,m)=>`<td data-hw="${m}">—</td>`).join('')}<td></td></tr></table></div>
+  <p class="note" style="margin:6px 0 0">${ACTNOTE[HPAR]}</p>
   <div class="hbar" style="margin-top:10px"><button class="btn" id="hpaApply">以此表季節比重套用到季／月拆分</button><span class="note" style="margin:0" id="hpaNow"></span></div>
   <div class="quad" style="margin-top:12px"><div><div class="eh">要因分析</div>${TA('data-hn="cause"',p.hpa.cause,'淡旺季與異常月份的原因（缺貨、客戶拉貨、新品導入、匯率…）')}</div>
   <div><div class="eh">改善對策</div>${TA('data-hn="action"',p.hpa.action,'針對要因的具體對策（具體・數字・時間）')}</div></div>
@@ -875,7 +881,7 @@ function renderPlan(){
 </div>`;
   const s4=`${stp('ps-4','四','企業總目標（KPI）','總體管理目標＝業績目標；再拆結構、組織與十職能 KPI')}
 ${lk?'<div class="lockbar" style="grid-column:1/-1">目標已定稿鎖定（目標不隨意變動）。如需調整，請將狀態改回「主管討論中」；五的對策與六的預算仍可修改。</div>':''}
-<div class="blk g4"><h3>（1）總體管理目標＝業績目標</h3><span class="k">毛利為主目標；營收由毛利率倒算。前一年（${prev}）：台灣 ${fmtMoney(pv(D.tw,prev),'NTD')}、大陸 ${fmtMoney(pv(D.cn,prev),'RMB')}、海外 ${fmtMoney(pv(D.os,prev),'USD')}</span>
+<div class="blk g4"><h3>（1）總體管理目標＝業績目標</h3><span class="k">毛利為主目標；營收由毛利率倒算。前一年（${prev}）目標：台灣 ${fmtMoney(pv(D.tw,prev),'NTD')}、大陸 ${fmtMoney(pv(D.cn,prev),'RMB')}、海外 ${fmtMoney(pv(D.os,prev),'USD')}${prev===2026?'；實績：台灣 1–9 月 6,512 萬（68%）、大陸 1–8 月 768 萬 RMB（64%）':''}</span>
     ${fr('台灣毛利','NTD 萬',inp('tw',Math.round(pv(D.tw,y)/W),100))}
     ${fr('大陸毛利','RMB 萬',inp('cn',Math.round(pv(D.cn,y)/W),10))}
     ${fr('海外毛利','USD 千',inp('os',Math.round(pv(D.os,y)/K),10))}
@@ -965,7 +971,7 @@ function refreshCycle(){
     if(el){ el.textContent=t; el.className='st '+cls; } }
   return {done,late};
 }
-function hpaWeights(p){ const g=p.hpa[HPAR][HPAM], yrs=[PY-3,PY-2,PY-1];
+function hpaWeights(p){ const g=D.act[HPAR][HPAM], yrs=[PY-3,PY-2,PY-1];
   const full=yrs.filter(yr=>{ const a=(g[yr]||[]).slice(0,12); return a.length===12&&a.every(v=>v!==''&&v!=null&&isFinite(v))&&a.reduce((s,v)=>s+(+v),0)>0; });
   if(!full.length) return null; const w=Array(12).fill(0);
   full.forEach(yr=>{ const a=g[yr].slice(0,12).map(Number), s=a.reduce((x,v)=>x+v,0); a.forEach((v,m)=>w[m]+=v/s*100/full.length); }); return {w,full}; }
@@ -984,7 +990,7 @@ function hpaSVG(rows){
   return g+'</svg>';
 }
 function refreshHPA(){
-  const p=P[PY]; if(!p||!document.getElementById('hpaChart')) return; const g=p.hpa[HPAR][HPAM], yrs=[PY-3,PY-2,PY-1], cols=['#A3A3A3','#5B9CC0','#DF9C41'];
+  const p=P[PY]; if(!p||!document.getElementById('hpaChart')) return; const g=D.act[HPAR][HPAM], yrs=[PY-3,PY-2,PY-1], cols=['#A3A3A3','#5B9CC0','#DF9C41'];
   yrs.forEach(yr=>{ const a=(g[yr]||[]).map(v=>v===''||v==null?null:+v); const s=a.filter(v=>v!=null).reduce((x,v)=>x+v,0); const el=document.querySelector(`[data-hs="${yr}"]`); if(el) el.textContent=s?num(s,0):'—'; });
   const hw=hpaWeights(p); for(let m=0;m<12;m++){ const el=document.querySelector(`[data-hw="${m}"]`); if(el) el.textContent=hw?hw.w[m].toFixed(1)+'%':'—'; }
   document.getElementById('hpaChart').innerHTML=hpaSVG(yrs.map((yr,i)=>({yr,color:cols[i],vals:[...Array(12)].map((_,m)=>{ const v=(g[yr]||[])[m]; return v===''||v==null?null:+v; })})));
@@ -1051,20 +1057,21 @@ function commit(e){
   if(t.dataset.e){ const [g,kk]=t.dataset.e.split('.'); if(!p.env[g]) p.env[g]={}; p.env[g][kk]=t.value; }
   if(t.dataset.n) p.note=t.value;
   if(t.dataset.cy){ const c=p.cycle[t.dataset.cy]||(p.cycle[t.dataset.cy]={}); if(t.dataset.cq==='done') c.done=t.checked; else c.due=t.value; }
-  if(t.dataset.h){ const [rg,mt,yr,m]=t.dataset.h.split('.'); const a=p.hpa[rg][mt][yr]||(p.hpa[rg][mt][yr]=Array(12).fill('')); a[+m]=t.value===''?'':N(t.value); refreshHPA(); }
+  if(t.dataset.h){ const [rg,mt,yr,m]=t.dataset.h.split('.'); const a=D.act[rg][mt][yr]||(D.act[rg][mt][yr]=Array(12).fill('')); a[+m]=t.value===''?'':N(t.value); refreshHPA(); }
   if(t.dataset.hn) p.hpa[t.dataset.hn]=t.value;
   p.updated=stamp(); refreshCalc(); save();
 }
 /* 儲存：瀏覽器本機（若可用）＋ JSON 匯出／匯入 */
 const KEY='wh-strategy-map-v3';
-function snapshot(){ return {PJ,D:{tw:D.tw,cn:D.cn,os:D.os,margin:D.margin,marginR:D.marginR,comm:D.comm,opex:D.opex,opexHR:D.opexHR,hrMix:D.hrMix,nonop:D.nonop,head:D.head,sales:D.sales,brandTW:D.brandTW,brandCN:D.brandCN,cnSite:D.cnSite},P,rate:S.rate,wm:WM,wmSrc:WMSRC,v:41}; }
+function snapshot(){ return {PJ,D:{tw:D.tw,cn:D.cn,os:D.os,margin:D.margin,marginR:D.marginR,comm:D.comm,opex:D.opex,opexHR:D.opexHR,hrMix:D.hrMix,nonop:D.nonop,act:D.act,head:D.head,sales:D.sales,brandTW:D.brandTW,brandCN:D.brandCN,cnSite:D.cnSite},P,rate:S.rate,wm:WM,wmSrc:WMSRC,v:42}; }
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(snapshot())); }catch(e){} }
 function load(obj){ if(!obj) return; try{ Object.assign(D.tw,obj.D.tw);Object.assign(D.cn,obj.D.cn);Object.assign(D.os,obj.D.os);Object.assign(D.margin,obj.D.margin);Object.assign(D.opex,obj.D.opex); if(obj.D.marginR) ['tw','cn','os'].forEach(k=>Object.assign(D.marginR[k],obj.D.marginR[k])); if(obj.D.comm) ['tw','cn','os'].forEach(k=>Object.assign(D.comm[k],obj.D.comm[k])); syncGroup();Object.assign(D.head,obj.D.head);
   ['tw','cn','os'].forEach(k=>Object.assign(D.sales[k],obj.D.sales[k])); BR.forEach(k=>{Object.assign(D.brandTW[k],obj.D.brandTW[k]);Object.assign(D.brandCN[k],obj.D.brandCN[k]);}); SITES.forEach(k=>Object.assign(D.cnSite[k],obj.D.cnSite[k]));
+  if(obj.D.act) for(const k of ['tw','cn']) for(const mt of ['gp','rev']) Object.assign(D.act[k][mt],((obj.D.act[k]||{})[mt])||{});
   if(obj.D.opexHR) Object.assign(D.opexHR,obj.D.opexHR); if(obj.D.hrMix) Object.assign(D.hrMix,obj.D.hrMix); if(obj.D.nonop) Object.assign(D.nonop,obj.D.nonop);
   if(Array.isArray(obj.wm)&&obj.wm.length===12){ WM=obj.wm.map(Number); WMSRC=obj.wmSrc||'自訂'; }
-  if(obj.v!==4&&obj.v!==41&&D.head[2026]===50) D.head[2026]=55;   // v3 以前的基準人數
-  if(obj.v!==41){ if(D.tw[2027]===12480*W){ D.tw[2027]=12504.4*W; D.tw[2028]=16255.72*W; D.tw[2029]=21132.44*W; D.tw[2031]=35713.82*W; D.tw[2036]=132602.9*W; } if(D.marginR.tw[2027]===22){ Object.assign(D.marginR.tw,{2026:22.9,2027:20.24,2028:20,2029:19.8,2031:19.5,2036:18}); } }
+  if(![4,41,42].includes(obj.v)&&D.head[2026]===50) D.head[2026]=55;   // v3 以前的基準人數
+  if(obj.v!==41&&obj.v!==42){ if(D.tw[2027]===12480*W){ D.tw[2027]=12504.4*W; D.tw[2028]=16255.72*W; D.tw[2029]=21132.44*W; D.tw[2031]=35713.82*W; D.tw[2036]=132602.9*W; } if(D.marginR.tw[2027]===22){ Object.assign(D.marginR.tw,{2026:22.9,2027:20.24,2028:20,2029:19.8,2031:19.5,2036:18}); } }
   Object.assign(P,obj.P||{}); Object.assign(PJ,obj.PJ||{}); if(obj.rate) Object.assign(S.rate,obj.rate); }catch(e){ console.error('載入失敗',e); } }
 const DEFAULT=JSON.parse(JSON.stringify(snapshot()));
 try{ const raw=localStorage.getItem(KEY); if(raw) load(JSON.parse(raw)); }catch(e){}
@@ -1173,7 +1180,7 @@ function renderSM(){
   if(SMO.rg){ rows.push({leaf:1,html:`<td class="sub">台灣（文浩）　NTD</td>${V(yrs.map(y=>money_(fyVal(D.tw,y),'NTD')))}`}); rows.push({leaf:1,html:`<td class="sub">大陸（宇宙光）　RMB</td>${V(yrs.map(y=>money_(fyVal(D.cn,y),'RMB')))}`});
     rows.push({leaf:1,html:`<td class="sub">海外（越南／馬來西亞／歐洲）　USD</td>${V(yrs.map(y=>money_(fyVal(D.os,y),'USD')))}`}); }
   rows.push({html:`<td class="sub">${tg('ch')}（3）事業別（BU）</td>${V(yrs.map(y=>SMO.ch?'':'台灣 3 部門＋其他・大陸 6 據點・海外'),'v ref')}`});
-  if(SMO.ch){ if(reg==='all'||reg==='tw'){ DEPTS.forEach(d=>rows.push({leaf:1,html:`<td class="sub">台灣 ${d}　NTD</td>${yrs.map(c=>{ const yy=cy(c), dv=N(((P[yy]||{}).depts||{})[d],NaN), txt=isFinite(dv)&&dv>0?money_(dv*W*cf(c),'NTD'):''; return canEd(c)?`<td class="v ed" contenteditable="true" data-smd="${d}" data-y="${yy}" data-ph="待填">${txt}</td>`:`<td class="v">${txt||'待填'}</td>`; }).join('')}`})); }
+  if(SMO.ch){ if(reg==='all'||reg==='tw'){ DEPTS.forEach(d=>rows.push({leaf:1,html:`<td class="sub">台灣 ${d}　NTD</td>${yrs.map(c=>{ const yy=cy(c), dv=N(deptVal(yy,d),NaN), txt=isFinite(dv)&&dv>0?money_(dv*W*cf(c),'NTD'):''; return canEd(c)?`<td class="v ed" contenteditable="true" data-smd="${d}" data-y="${yy}" data-ph="待填">${txt}</td>`:`<td class="v">${txt||'待填'}</td>`; }).join('')}`})); }
     if(reg==='all'||reg==='cn'){ for(const [k,q] of Object.entries(D.cnSite)) rows.push({leaf:1,html:`<td class="sub">大陸 ${k}　RMB</td>${V(yrs.map(y=>money_(fyVal(q,y),'RMB')))}`}); }
     if(reg==='all'||reg==='os') rows.push({leaf:1,html:`<td class="sub">海外據點數</td>${V(yrs.map(y=>num(interp(D.sites,cy(y),false),0)+' 處'))}`});
     rows.push({leaf:1,html:`<td class="sub">客戶新舊（回購率底線 85%）</td>${V(yrs.map(y=>'既有 90%＋成長＋新客'),'v ref')}`}); }
